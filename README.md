@@ -180,14 +180,14 @@ claude-code-plugin/
 ├── .claude-plugin/
 │   └── plugin.json        # Plugin manifest
 ├── .mcp.json              # MCP server configuration (auto-loaded by plugin)
-├── .gitignore             # Excludes skills/, .env, OS files
+├── .gitignore             # Excludes .env, OS files
 ├── CLAUDE.md              # Claude Code project instructions
 ├── CONTRIBUTING.md        # Contribution guidelines
 ├── LICENSE                # MIT license
 ├── Makefile               # build, clean, setup, verify targets
 ├── README.md              # This file
 ├── SECURITY.md            # Security policy and credential handling
-├── skills/                # Bundled skills (built from suprsend/skills, git-ignored)
+├── skills/                # Bundled skills (sourced from suprsend/skills, committed)
 │   ├── suprsend-workflow-schema/
 │   │   └── SKILL.md
 │   ├── suprsend-docs-support/
