@@ -1,6 +1,5 @@
 {
   "name": "suprsend",
-  "version": "0.1.0",
   "description": "SuprSend plugin for Claude Code — workflow management, templates, schemas, and notification infrastructure",
   "author": {
     "name": "SuprSend",
