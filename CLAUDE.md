@@ -4,7 +4,7 @@ This project is the official SuprSend plugin for Claude Code. It provides two co
 
 ## Skills (Read-Only Context)
 
-Skills are bundled in the `skills/` directory (fetched from `suprsend/skills` during `make build`). They give you:
+Skills are bundled in the `skills/` directory (sourced from `suprsend/skills` and committed to the repo). A CI workflow checks weekly for upstream changes and auto-opens a PR if skills drift. You can also run `make build` to refresh them manually. They give you:
 
 - **suprsend-workflow-schema**: Complete JSON schema reference for all workflow node types, with documentation and examples.
 - **suprsend-docs-support**: How to access SuprSend docs, LLM-friendly endpoints, Slack community, and support channels.

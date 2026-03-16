@@ -1,6 +1,6 @@
 # SuprSend Claude Code Plugin
 
-The official [SuprSend](https://suprsend.com) plugin for [Claude Code](https://docs.anthropic.com/en/docs/claude-code). Combines **bundled agent skills** and the **SuprSend MCP server** to give Claude deep context about SuprSend — workflows, templates, schemas, CLI commands, and live platform interactions — all from your terminal.
+The official [SuprSend](https://suprsend.com) plugin for [Claude Code](https://code.claude.com/docs). Combines **bundled agent skills** and the **SuprSend MCP server** to give Claude deep context about SuprSend — workflows, templates, schemas, CLI commands, and live platform interactions — all from your terminal.
 
 ## What You Get
 
@@ -180,14 +180,14 @@ claude-code-plugin/
 ├── .claude-plugin/
 │   └── plugin.json        # Plugin manifest
 ├── .mcp.json              # MCP server configuration (auto-loaded by plugin)
-├── .gitignore             # Excludes skills/, .env, OS files
+├── .gitignore             # Excludes .env, OS files
 ├── CLAUDE.md              # Claude Code project instructions
 ├── CONTRIBUTING.md        # Contribution guidelines
 ├── LICENSE                # MIT license
 ├── Makefile               # build, clean, setup, verify targets
 ├── README.md              # This file
 ├── SECURITY.md            # Security policy and credential handling
-├── skills/                # Bundled skills (built from suprsend/skills, git-ignored)
+├── skills/                # Bundled skills (sourced from suprsend/skills, committed)
 │   ├── suprsend-workflow-schema/
 │   │   └── SKILL.md
 │   ├── suprsend-docs-support/
@@ -264,7 +264,7 @@ We welcome contributions! See [CONTRIBUTING.md](CONTRIBUTING.md) for details on 
 ## Links
 
 - [SuprSend Documentation](https://docs.suprsend.com)
-- [SuprSend CLI Reference](https://docs.suprsend.com/reference/cli-overview)
+- [SuprSend CLI Reference](https://docs.suprsend.com/reference/cli-intro)
 - [SuprSend Skills](https://github.com/suprsend/skills)
 - [SuprSend CLI](https://github.com/suprsend/cli)
 - [MCP Server Docs](https://github.com/suprsend/cli/blob/main/docs/suprsend_start-mcp-server.md)
