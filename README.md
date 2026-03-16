@@ -35,12 +35,13 @@ Or set it as an environment variable for the current session:
 export SUPRSEND_SERVICE_TOKEN="your_service_token_here"
 ```
 
-### 3. Install the plugin
+### 3. Add the marketplace & install the plugin
 
-Inside Claude Code, run:
+Inside Claude Code, add the SuprSend marketplace and then install the plugin:
 
 ```
 /plugin marketplace add suprsend/claude-code-plugin
+/plugin install suprsend@suprsend-marketplace
 ```
 
 That's it — skills and MCP tools are available immediately.
@@ -238,7 +239,12 @@ brew tap suprsend/tap && brew install suprsend
 
 1. Verify authentication: check your service token or profile configuration
 2. Test the server manually: `suprsend start-mcp-server --transport stdio`
-3. Reinstall the plugin: `/plugin marketplace add suprsend/claude-code-plugin`
+3. Reinstall the plugin:
+   ```
+   /plugin marketplace remove suprsend-marketplace
+   /plugin marketplace add suprsend/claude-code-plugin
+   /plugin install suprsend@suprsend-marketplace
+   ```
 
 ### Skills not loading
 
@@ -247,14 +253,16 @@ Try removing and re-adding the plugin:
 ```
 /plugin marketplace remove suprsend-marketplace
 /plugin marketplace add suprsend/claude-code-plugin
+/plugin install suprsend@suprsend-marketplace
 ```
 
 ### Plugin not loading
 
-Verify the plugin is installed by checking your active plugins in Claude Code. If missing, reinstall:
+Verify the plugin is installed by checking your active plugins in Claude Code (run `/plugin` and check the **Installed** tab). If missing, reinstall:
 
 ```
 /plugin marketplace add suprsend/claude-code-plugin
+/plugin install suprsend@suprsend-marketplace
 ```
 
 ## Contributing
