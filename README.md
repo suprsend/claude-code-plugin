@@ -37,15 +37,13 @@ export SUPRSEND_SERVICE_TOKEN="your_service_token_here"
 
 ### 3. Install the plugin
 
-```bash
-# Clone and build
-git clone https://github.com/suprsend/claude-code-plugin.git
-cd claude-code-plugin
-make setup
+Inside Claude Code, run:
 
-# Load in Claude Code
-claude --plugin-dir .
 ```
+/plugin marketplace add suprsend/claude-code-plugin
+```
+
+That's it — skills and MCP tools are available immediately.
 
 ## Usage Examples
 
@@ -138,7 +136,7 @@ The plugin includes an `.mcp.json` that auto-registers the MCP server when the p
 
 ## Skills Reference
 
-The plugin bundles three skills from [`suprsend/skills`](https://github.com/suprsend/skills) (fetched during `make build`):
+The plugin bundles three skills from [`suprsend/skills`](https://github.com/suprsend/skills) (committed to this repo, kept fresh by CI):
 
 | Skill | Description |
 |-------|-------------|
@@ -178,6 +176,7 @@ The MCP server exposes tools across these categories:
 ```
 claude-code-plugin/
 ├── .claude-plugin/
+│   ├── marketplace.json   # Marketplace manifest (for /plugin marketplace add)
 │   └── plugin.json        # Plugin manifest
 ├── .mcp.json              # MCP server configuration (auto-loaded by plugin)
 ├── .gitignore             # Excludes .env, OS files
@@ -239,22 +238,23 @@ brew tap suprsend/tap && brew install suprsend
 
 1. Verify authentication: check your service token or profile configuration
 2. Test the server manually: `suprsend start-mcp-server --transport stdio`
-3. Make sure the plugin is loaded: `claude --plugin-dir .`
+3. Reinstall the plugin: `/plugin marketplace add suprsend/claude-code-plugin`
 
 ### Skills not loading
 
-Rebuild skills:
+Try removing and re-adding the plugin:
 
-```bash
-make clean && make build
+```
+/plugin marketplace remove suprsend-marketplace
+/plugin marketplace add suprsend/claude-code-plugin
 ```
 
 ### Plugin not loading
 
-Verify the plugin structure:
+Verify the plugin is installed by checking your active plugins in Claude Code. If missing, reinstall:
 
-```bash
-make verify
+```
+/plugin marketplace add suprsend/claude-code-plugin
 ```
 
 ## Contributing

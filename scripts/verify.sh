@@ -75,7 +75,7 @@ fi
 
 echo ""
 if [ "$ERRORS" -eq 0 ]; then
-  echo -e "${BOLD}${GREEN}All checks passed!${NC} Load the plugin with: claude --plugin-dir ."
+  echo -e "${BOLD}${GREEN}All checks passed!${NC} Install the plugin with: /plugin marketplace add suprsend/claude-code-plugin"
 else
   echo -e "${BOLD}${RED}${ERRORS} check(s) failed.${NC} See above for fix instructions."
 fi

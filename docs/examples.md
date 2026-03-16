@@ -1,9 +1,9 @@
 # Usage Examples
 
-Make sure the plugin is loaded before trying these examples:
+Make sure the plugin is installed before trying these examples:
 
-```bash
-claude --plugin-dir /path/to/claude-code-plugin
+```
+/plugin marketplace add suprsend/claude-code-plugin
 ```
 
 Examples marked with **(skill)** are answered by bundled skills (no API call needed). All others use MCP tools and require authentication.
