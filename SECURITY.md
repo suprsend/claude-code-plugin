@@ -26,7 +26,7 @@ Authentication uses **service tokens** created in [Account Settings → Service 
 
 Skills are read-only reference material. They do not make API calls, store credentials, or execute code against your workspace.
 
-Skills are fetched from the [`suprsend/skills`](https://github.com/suprsend/skills) repo during `make build`. The build always fetches the latest `main` branch by default. To pin to a specific version, set `SKILLS_BRANCH` to a tag or commit reference:
+Skills are bundled from the [`suprsend/skills`](https://github.com/suprsend/skills) repo and committed to this repository. A CI workflow checks weekly for upstream changes and auto-opens a PR if skills drift. For development, you can rebuild skills locally with `make build`. To pin to a specific version, set `SKILLS_BRANCH` to a tag or commit reference:
 
 ```bash
 SKILLS_BRANCH=v1.0.0 make build

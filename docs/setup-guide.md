@@ -6,7 +6,6 @@ Detailed setup instructions for each platform.
 
 | Requirement     | Minimum Version | Check                |
 | --------------- | --------------- | -------------------- |
-| git             | any             | `git --version`      |
 | Claude Code CLI | latest          | `claude --version`   |
 | SuprSend CLI    | latest          | `suprsend --version` |
 
@@ -29,16 +28,10 @@ suprsend profile add --name default --service-token <YOUR_SERVICE_TOKEN>
 
 ### 3. Install the plugin
 
-```bash
-git clone https://github.com/suprsend/claude-code-plugin.git
-cd claude-code-plugin
-make setup
+Inside Claude Code, run:
+
 ```
-
-### 4. Load in Claude Code
-
-```bash
-claude --plugin-dir .
+/plugin marketplace add suprsend/claude-code-plugin
 ```
 
 ## Linux (Debian/Ubuntu)
@@ -56,20 +49,18 @@ go install github.com/suprsend/cli/cmd/suprsend@latest
 export PATH="$PATH:$(go env GOPATH)/bin"
 ```
 
-### 2. Authenticate & Install
+### 2. Authenticate
 
 ```bash
 suprsend profile add --name default --service-token <YOUR_SERVICE_TOKEN>
-
-git clone https://github.com/suprsend/claude-code-plugin.git
-cd claude-code-plugin
-make setup
 ```
 
-### 3. Load in Claude Code
+### 3. Install the plugin
 
-```bash
-claude --plugin-dir .
+Inside Claude Code, run:
+
+```
+/plugin marketplace add suprsend/claude-code-plugin
 ```
 
 ## Windows (WSL)
@@ -85,26 +76,19 @@ wsl
 
 ## CI/CD Environments
 
-For automated environments where interactive setup isn't possible:
+For automated environments, authenticate via the `SUPRSEND_SERVICE_TOKEN` environment variable:
 
 ```bash
 # 1. Install CLI
 go install github.com/suprsend/cli/cmd/suprsend@latest
 
-# 2. Authenticate via environment variable (set SUPRSEND_SERVICE_TOKEN in your CI secrets)
-# export SUPRSEND_SERVICE_TOKEN is set by the CI provider
-
-# 3. Build the plugin
-git clone https://github.com/suprsend/claude-code-plugin.git
-cd claude-code-plugin
-make build
+# 2. Set SUPRSEND_SERVICE_TOKEN as an encrypted secret in your CI provider
 ```
-
-Store `SUPRSEND_SERVICE_TOKEN` as an encrypted secret in your CI provider.
 
 ## Uninstall
 
-```bash
-# Remove the plugin directory
-cd .. && rm -rf claude-code-plugin
+Inside Claude Code, run:
+
+```
+/plugin marketplace remove suprsend-marketplace
 ```

@@ -39,22 +39,11 @@ Get a new service token from [Account Settings → Service Tokens](https://app.s
 
 ### Plugin not loading
 
-Verify the plugin structure is intact:
+Try removing and reinstalling the plugin inside Claude Code:
 
-```bash
-make verify
 ```
-
-All checks should pass. If skills are missing, rebuild them:
-
-```bash
-make build
-```
-
-Then load the plugin:
-
-```bash
-claude --plugin-dir .
+/plugin marketplace remove suprsend-marketplace
+/plugin marketplace add suprsend/claude-code-plugin
 ```
 
 ### MCP server not connecting
@@ -67,7 +56,7 @@ claude --plugin-dir .
 
 2. Verify the plugin's `.mcp.json` exists and contains the suprsend server config.
 
-3. Reload the plugin in Claude Code.
+3. Reinstall the plugin: `/plugin marketplace remove suprsend-marketplace` then `/plugin marketplace add suprsend/claude-code-plugin`
 
 ### Tools not appearing
 
@@ -81,20 +70,16 @@ If Claude doesn't seem to have access to SuprSend tools:
 
 ### Skills not activating
 
-Skills load on demand — they activate when Claude detects you're working on SuprSend-related tasks.
+Skills load on demand — they activate when Claude detects you're working on SuprSend-related tasks. If skills seem missing, try reinstalling the plugin:
 
-**Rebuild skills:**
-```bash
-make clean && make build
+```
+/plugin marketplace remove suprsend-marketplace
+/plugin marketplace add suprsend/claude-code-plugin
 ```
 
 ### Stale skill content
 
-Skills are fetched from the `suprsend/skills` repo during build. To get the latest:
-
-```bash
-make clean && make build
-```
+Skills are bundled in the plugin repo. To get the latest version, reinstall the plugin — it will pull the latest from the GitHub repo.
 
 ## Environment-Specific
 
