@@ -1,6 +1,6 @@
 # SuprSend Claude Code Plugin
 
-The official [SuprSend](https://suprsend.com) plugin for [Claude Code](https://docs.anthropic.com/en/docs/claude-code). Combines **bundled agent skills** and the **SuprSend MCP server** to give Claude deep context about SuprSend — workflows, templates, schemas, CLI commands, and live platform interactions — all from your terminal.
+The official [SuprSend](https://suprsend.com) plugin for [Claude Code](https://code.claude.com/docs). Combines **bundled agent skills** and the **SuprSend MCP server** to give Claude deep context about SuprSend — workflows, templates, schemas, CLI commands, and live platform interactions — all from your terminal.
 
 ## What You Get
 
@@ -264,7 +264,7 @@ We welcome contributions! See [CONTRIBUTING.md](CONTRIBUTING.md) for details on 
 ## Links
 
 - [SuprSend Documentation](https://docs.suprsend.com)
-- [SuprSend CLI Reference](https://docs.suprsend.com/reference/cli-overview)
+- [SuprSend CLI Reference](https://docs.suprsend.com/reference/cli-intro)
 - [SuprSend Skills](https://github.com/suprsend/skills)
 - [SuprSend CLI](https://github.com/suprsend/cli)
 - [MCP Server Docs](https://github.com/suprsend/cli/blob/main/docs/suprsend_start-mcp-server.md)

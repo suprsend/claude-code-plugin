@@ -105,7 +105,7 @@ For non-interactive environments, set the `SUPRSEND_SERVICE_TOKEN` environment v
 ## Getting Help
 
 - [SuprSend Documentation](https://docs.suprsend.com)
-- [SuprSend Slack Community](https://suprsend.com/slack)
+- [SuprSend Slack Community](https://join.slack.com/t/suprsendcommunity/shared_invite/zt-3932rw936-XNWY1RC8bsffh4if4ZyoXQ)
 - [GitHub Issues — Plugin](https://github.com/suprsend/claude-code-plugin/issues)
 - [GitHub Issues — Skills](https://github.com/suprsend/skills/issues)
 - [GitHub Issues — CLI](https://github.com/suprsend/cli/issues)

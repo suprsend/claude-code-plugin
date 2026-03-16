@@ -1,6 +1,3 @@
-# Built skills (fetched from suprsend/skills during build)
-skills/
-
 # Environment files
 .env
 .env.*
