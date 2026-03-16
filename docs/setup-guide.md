@@ -76,14 +76,20 @@ wsl
 
 ## CI/CD Environments
 
-For automated environments, authenticate via the `SUPRSEND_SERVICE_TOKEN` environment variable:
+For automated environments where Claude Code isn't available interactively, use the SuprSend CLI directly:
 
 ```bash
 # 1. Install CLI
 go install github.com/suprsend/cli/cmd/suprsend@latest
 
 # 2. Set SUPRSEND_SERVICE_TOKEN as an encrypted secret in your CI provider
+
+# 3. Use the CLI directly (no plugin needed)
+suprsend workflows list
+suprsend sync
 ```
+
+The MCP server and plugin are for interactive Claude Code sessions. In CI, call the SuprSend CLI commands directly.
 
 ## Uninstall
 

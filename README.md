@@ -136,7 +136,7 @@ The plugin includes an `.mcp.json` that auto-registers the MCP server when the p
 
 ## Skills Reference
 
-The plugin bundles three skills from [`suprsend/skills`](https://github.com/suprsend/skills) (fetched during `make build`):
+The plugin bundles three skills from [`suprsend/skills`](https://github.com/suprsend/skills) (committed to this repo, kept fresh by CI):
 
 | Skill | Description |
 |-------|-------------|
