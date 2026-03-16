@@ -1,0 +1,11 @@
+{
+  "mcpServers": {
+    "suprsend": {
+      "command": "suprsend",
+      "args": ["start-mcp-server", "--transport", "stdio"],
+      "env": {
+        "SUPRSEND_SERVICE_TOKEN": "${SUPRSEND_SERVICE_TOKEN}"
+      }
+    }
+  }
+}

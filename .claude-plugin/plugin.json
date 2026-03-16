@@ -1,0 +1,14 @@
+{
+  "name": "suprsend",
+  "version": "0.1.0",
+  "description": "SuprSend plugin for Claude Code — workflow management, templates, schemas, and notification infrastructure",
+  "author": {
+    "name": "SuprSend",
+    "email": "support@suprsend.com",
+    "url": "https://suprsend.com"
+  },
+  "homepage": "https://github.com/suprsend/claude-code-plugin",
+  "repository": "https://github.com/suprsend/claude-code-plugin",
+  "license": "MIT",
+  "keywords": ["suprsend", "notifications", "workflows", "mcp"]
+}

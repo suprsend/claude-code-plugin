@@ -1,0 +1,10 @@
+# Built skills (fetched from suprsend/skills during build)
+skills/
+
+# Environment files
+.env
+.env.*
+
+# OS files
+.DS_Store
+Thumbs.db
