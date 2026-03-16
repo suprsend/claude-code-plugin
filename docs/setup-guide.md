@@ -26,12 +26,13 @@ Get a service token from [Account Settings → Service Tokens](https://app.suprs
 suprsend profile add --name default --service-token <YOUR_SERVICE_TOKEN>
 ```
 
-### 3. Install the plugin
+### 3. Add the marketplace & install the plugin
 
-Inside Claude Code, run:
+Inside Claude Code, add the SuprSend marketplace and then install the plugin:
 
 ```
 /plugin marketplace add suprsend/claude-code-plugin
+/plugin install suprsend@suprsend-marketplace
 ```
 
 ## Linux (Debian/Ubuntu)
@@ -55,12 +56,13 @@ export PATH="$PATH:$(go env GOPATH)/bin"
 suprsend profile add --name default --service-token <YOUR_SERVICE_TOKEN>
 ```
 
-### 3. Install the plugin
+### 3. Add the marketplace & install the plugin
 
-Inside Claude Code, run:
+Inside Claude Code, add the SuprSend marketplace and then install the plugin:
 
 ```
 /plugin marketplace add suprsend/claude-code-plugin
+/plugin install suprsend@suprsend-marketplace
 ```
 
 ## Windows (WSL)
@@ -93,8 +95,9 @@ The MCP server and plugin are for interactive Claude Code sessions. In CI, call 
 
 ## Uninstall
 
-Inside Claude Code, run:
+Inside Claude Code, uninstall the plugin and remove the marketplace:
 
 ```
+/plugin uninstall suprsend@suprsend-marketplace
 /plugin marketplace remove suprsend-marketplace
 ```

@@ -44,6 +44,7 @@ Try removing and reinstalling the plugin inside Claude Code:
 ```
 /plugin marketplace remove suprsend-marketplace
 /plugin marketplace add suprsend/claude-code-plugin
+/plugin install suprsend@suprsend-marketplace
 ```
 
 ### MCP server not connecting
@@ -56,7 +57,12 @@ Try removing and reinstalling the plugin inside Claude Code:
 
 2. Verify the plugin's `.mcp.json` exists and contains the suprsend server config.
 
-3. Reinstall the plugin: `/plugin marketplace remove suprsend-marketplace` then `/plugin marketplace add suprsend/claude-code-plugin`
+3. Reinstall the plugin:
+   ```
+   /plugin marketplace remove suprsend-marketplace
+   /plugin marketplace add suprsend/claude-code-plugin
+   /plugin install suprsend@suprsend-marketplace
+   ```
 
 ### Tools not appearing
 
@@ -75,6 +81,7 @@ Skills load on demand — they activate when Claude detects you're working on Su
 ```
 /plugin marketplace remove suprsend-marketplace
 /plugin marketplace add suprsend/claude-code-plugin
+/plugin install suprsend@suprsend-marketplace
 ```
 
 ### Stale skill content
