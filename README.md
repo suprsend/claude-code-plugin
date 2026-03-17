@@ -15,7 +15,8 @@ The official [SuprSend](https://suprsend.com) plugin for [Claude Code](https://c
 
 ```bash
 # macOS
-brew tap suprsend/tap && brew install suprsend
+brew tap suprsend/tap
+brew install --cask suprsend
 
 # or via Go
 go install github.com/suprsend/cli/cmd/suprsend@latest
@@ -232,7 +233,7 @@ Make sure the SuprSend CLI is installed and on your PATH:
 ```bash
 which suprsend
 # If empty, reinstall:
-brew tap suprsend/tap && brew install suprsend
+brew tap suprsend/tap && brew install --cask suprsend
 ```
 
 ### MCP server not connecting

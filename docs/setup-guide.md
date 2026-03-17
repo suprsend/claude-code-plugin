@@ -15,7 +15,7 @@ Detailed setup instructions for each platform.
 
 ```bash
 brew tap suprsend/tap
-brew install suprsend
+brew install --cask suprsend
 ```
 
 ### 2. Authenticate

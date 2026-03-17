@@ -8,7 +8,7 @@ The SuprSend CLI isn't on your PATH.
 
 **Fix (macOS):**
 ```bash
-brew tap suprsend/tap && brew install suprsend
+brew tap suprsend/tap && brew install --cask suprsend
 ```
 
 **Fix (Go):**
