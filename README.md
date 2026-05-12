@@ -40,6 +40,8 @@ Inside Claude Code, add the SuprSend marketplace and then install the plugin:
 
 #### VS Code Copilot
 
+> ⚠️ **Preview feature.** VS Code [Agent Plugins](https://code.visualstudio.com/docs/copilot/customization/agent-plugins) are currently in preview. The host requires the `chat.plugins.enabled` setting to be on (managed at the organization level — if disabled, contact your admin).
+
 1. Open the command palette (`Cmd/Ctrl + Shift + P`)
 2. Run **`Chat: Install Plugin From Source`**
 3. Enter `suprsend/claude-code-plugin` when prompted (or the full URL `https://github.com/suprsend/claude-code-plugin.git`)

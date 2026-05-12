@@ -41,6 +41,8 @@ The plugin format is shared between Claude Code, VS Code Copilot, and GitHub Cop
 
 #### VS Code Copilot
 
+> ⚠️ **Preview feature.** VS Code [Agent Plugins](https://code.visualstudio.com/docs/copilot/customization/agent-plugins) are currently in preview. The host requires the `chat.plugins.enabled` setting to be on. This setting is managed at the organization level — if it's disabled, contact your admin to enable it before continuing.
+
 1. Open the command palette (`Cmd/Ctrl + Shift + P`).
 2. Run **`Chat: Install Plugin From Source`**.
 3. Enter `suprsend/claude-code-plugin` (or the full URL `https://github.com/suprsend/claude-code-plugin.git`).
