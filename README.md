@@ -6,28 +6,19 @@ The official [SuprSend](https://suprsend.com) plugin for [Claude Code](https://c
 
 | Layer | What it does | Source |
 |-------|-------------|--------|
-| **Skills** | Workflow schema reference, CLI docs, support resources — bundled in `skills/` and loaded automatically by Claude when relevant | [`suprsend/skills`](https://github.com/suprsend/skills) |
+| **Skills** | Workflow schema, template (variant) schema, CLI docs, support resources — bundled in `skills/` and loaded automatically by Claude when relevant | [`suprsend/skills`](https://github.com/suprsend/skills) |
 | **MCP Server** | Live tools to query & manage your SuprSend workspace — workflows, templates, schemas, events, categories, translations | [`suprsend/cli`](https://github.com/suprsend/cli) (`start-mcp-server`) |
 
 ## Quick Start
 
-### 1. Install the SuprSend CLI
+The plugin runs the SuprSend CLI via `npx suprsend` — no separate install step. You only need Node.js (v20+) and Claude Code.
 
-```bash
-# macOS
-brew tap suprsend/tap
-brew install --cask suprsend
-
-# or via Go
-go install github.com/suprsend/cli/cmd/suprsend@latest
-```
-
-### 2. Authenticate
+### 1. Authenticate
 
 Get a service token from your [SuprSend Dashboard → Account Settings → Service Tokens](https://app.suprsend.com), then save it as a profile:
 
 ```bash
-suprsend profile add --name default --service-token <YOUR_SERVICE_TOKEN>
+npx suprsend profile add --name default --service-token <YOUR_SERVICE_TOKEN>
 ```
 
 Or set it as an environment variable for the current session:
@@ -36,7 +27,7 @@ Or set it as an environment variable for the current session:
 export SUPRSEND_SERVICE_TOKEN="your_service_token_here"
 ```
 
-### 3. Add the marketplace & install the plugin
+### 2. Add the marketplace & install the plugin
 
 Inside Claude Code, add the SuprSend marketplace and then install the plugin:
 
@@ -45,7 +36,9 @@ Inside Claude Code, add the SuprSend marketplace and then install the plugin:
 /plugin install suprsend@suprsend-marketplace
 ```
 
-That's it — skills and MCP tools are available immediately.
+That's it — skills and MCP tools are available immediately. Claude Code will fetch the `suprsend` npm package on first MCP startup and cache it; subsequent launches are instant.
+
+> Prefer a global install? `brew tap suprsend/tap && brew install --cask suprsend` (macOS) or `go install github.com/suprsend/cli/cmd/suprsend@latest` (any platform) both work — `suprsend` on `PATH` takes precedence over the npx fallback.
 
 ## Usage Examples
 
@@ -73,49 +66,51 @@ Claude will automatically activate the right skills and MCP tools based on your 
 ## Architecture
 
 ```
-┌─────────────────────────────────────────────────┐
-│                  Claude Code                     │
-│                                                  │
-│  ┌────────────────┐    ┌──────────────────────┐  │
-│  │  Bundled Skills │    │    MCP Server         │  │
-│  │                │    │                      │  │
-│  │  • Workflow     │    │  suprsend             │  │
-│  │    schema ref   │    │  start-mcp-server     │  │
-│  │  • CLI docs     │    │  --transport stdio    │  │
-│  │  • Support      │    │                      │  │
-│  │    resources    │    │  Tools:              │  │
-│  │                │    │  • Workflow mgmt      │  │
-│  │  Loaded on     │    │  • Template mgmt     │  │
-│  │  demand via    │    │  • Schema mgmt       │  │
-│  │  progressive   │    │  • Event mgmt        │  │
-│  │  disclosure    │    │  • Category mgmt     │  │
-│  └────────────────┘    │  • Translation mgmt  │  │
-│                        └──────────────────────┘  │
-│                              │                   │
-└──────────────────────────────┼───────────────────┘
-                               │ stdio
-                               ▼
-                    ┌──────────────────┐
-                    │  SuprSend API    │
-                    │  (your workspace)│
-                    └──────────────────┘
+┌─────────────────────────────────────────────────────┐
+│                    Claude Code                       │
+│                                                      │
+│  ┌──────────────────┐    ┌──────────────────────┐    │
+│  │  Bundled Skills  │    │     MCP Server       │    │
+│  │                  │    │                      │    │
+│  │  • Workflow      │    │  npx suprsend        │    │
+│  │    schema ref    │    │  start-mcp-server    │    │
+│  │  • Template      │    │  --transport stdio   │    │
+│  │    (variant)     │    │                      │    │
+│  │    schema ref    │    │  Tools:              │    │
+│  │  • CLI docs      │    │  • Workflow mgmt     │    │
+│  │  • Support       │    │  • Template mgmt     │    │
+│  │    resources     │    │  • Schema mgmt       │    │
+│  │                  │    │  • Event mgmt        │    │
+│  │  Loaded on       │    │  • Category mgmt     │    │
+│  │  demand via      │    │  • Translation mgmt  │    │
+│  │  progressive     │    │                      │    │
+│  │  disclosure      │    │                      │    │
+│  └──────────────────┘    └──────────────────────┘    │
+│                                  │                   │
+└──────────────────────────────────┼───────────────────┘
+                                   │ stdio
+                                   ▼
+                        ┌──────────────────┐
+                        │  SuprSend API    │
+                        │  (your workspace)│
+                        └──────────────────┘
 ```
 
 ## Configuration
 
 ### MCP Server Options
 
-The MCP server is started via the SuprSend CLI. You can pass flags to customize behavior:
+The MCP server is started via the SuprSend CLI. You can pass flags to customize behavior (use `suprsend` if installed globally, or `npx suprsend` otherwise):
 
 ```bash
 # Default — stdio transport (recommended for Claude Code)
-suprsend start-mcp-server
+npx suprsend start-mcp-server
 
 # Explicit stdio
-suprsend start-mcp-server --transport stdio
+npx suprsend start-mcp-server --transport stdio
 
 # SSE transport (for remote / multi-client setups)
-suprsend start-mcp-server --transport sse
+npx suprsend start-mcp-server --transport sse
 ```
 
 ### MCP Server Configuration
@@ -126,25 +121,25 @@ The plugin includes an `.mcp.json` that auto-registers the MCP server when the p
 {
   "mcpServers": {
     "suprsend": {
-      "command": "suprsend",
-      "args": ["start-mcp-server", "--transport", "stdio"],
-      "env": {
-        "SUPRSEND_SERVICE_TOKEN": "${SUPRSEND_SERVICE_TOKEN}"
-      }
+      "command": "npx",
+      "args": ["-y", "suprsend", "start-mcp-server", "--transport", "stdio"]
     }
   }
 }
 ```
 
+`npx -y` fetches the `suprsend` npm package on first launch and caches it for subsequent runs. The CLI reads `SUPRSEND_SERVICE_TOKEN` from the environment, or falls back to the active profile (see Authentication above).
+
 ## Skills Reference
 
-The plugin bundles three skills from [`suprsend/skills`](https://github.com/suprsend/skills) (committed to this repo, kept fresh by CI):
+The plugin bundles four skills from [`suprsend/skills`](https://github.com/suprsend/skills) (committed to this repo, kept fresh by CI):
 
 | Skill | Description |
 |-------|-------------|
 | `suprsend-workflow-schema` | Complete workflow node reference — JSON schema, documentation, and usage examples for every node type |
-| `suprsend-docs-support` | How to access SuprSend documentation, LLM-friendly endpoints, in-app chat, AI copilot, Slack community, and email support |
-| `suprsend-cli` | Full CLI command reference — managing workspaces, templates, workflows, schemas, and more |
+| `suprsend-template-schema` | Template (variant) schema reference — variant envelope, multi-tenant & multi-lingual variants, Handlebars + JSONNET syntax, and per-channel content schemas for all 9 channels (email, sms, whatsapp, inbox, slack, ms_teams, androidpush, iospush, webpush) |
+| `suprsend-docs-support` | How to access SuprSend documentation — docs-over-SSH (`ssh suprsend.sh`), `.md`-suffix raw markdown fallback, LLM-friendly endpoints, in-app chat, AI copilot, Slack community, and email support |
+| `suprsend-cli` | Full CLI command reference with agent-targeted per-command Tips — managing workspaces, templates, workflows, schemas, and more |
 
 Skills follow the [agentskills.io progressive disclosure](https://agentskills.io/specification) model: metadata loads at startup, instructions load on activation, and resources load on demand.
 
@@ -190,11 +185,9 @@ claude-code-plugin/
 ├── SECURITY.md            # Security policy and credential handling
 ├── skills/                # Bundled skills (sourced from suprsend/skills, committed)
 │   ├── suprsend-workflow-schema/
-│   │   └── SKILL.md
+│   ├── suprsend-template-schema/
 │   ├── suprsend-docs-support/
-│   │   └── SKILL.md
 │   └── suprsend-cli/
-│       └── SKILL.md
 ├── docs/
 │   ├── examples.md        # Extended usage examples
 │   ├── setup-guide.md     # Platform-specific setup instructions
@@ -228,12 +221,18 @@ make verify
 
 ### "suprsend: command not found"
 
-Make sure the SuprSend CLI is installed and on your PATH:
+The plugin uses `npx suprsend` by default, so you only need Node.js (v20+). If `node` and `npx` are present, the MCP server fetches the SuprSend CLI on first launch — no manual install needed:
 
 ```bash
-which suprsend
-# If empty, reinstall:
-brew tap suprsend/tap && brew install --cask suprsend
+node --version   # should print v20.x or newer
+npx --version
+```
+
+If you prefer a global install, either of these works (and takes precedence over the npx fallback):
+
+```bash
+brew tap suprsend/tap && brew install --cask suprsend         # macOS
+go install github.com/suprsend/cli/cmd/suprsend@latest        # any platform
 ```
 
 ### MCP server not connecting
