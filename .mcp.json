@@ -1,8 +1,8 @@
 {
   "mcpServers": {
     "suprsend": {
-      "command": "suprsend",
-      "args": ["start-mcp-server", "--transport", "stdio"]
+      "command": "npx",
+      "args": ["-y", "suprsend", "start-mcp-server", "--transport", "stdio"]
     }
   }
 }

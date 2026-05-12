@@ -4,7 +4,16 @@
 
 ### "suprsend: command not found"
 
-The SuprSend CLI isn't on your PATH.
+The plugin uses `npx suprsend` by default, so a global SuprSend CLI install isn't required — just Node.js v20+ on the system.
+
+**Fix (npx, recommended):**
+```bash
+node --version   # should print v20.x or newer
+npx --version
+npx suprsend --version   # fetches + caches the CLI on first run
+```
+
+If you'd rather install globally:
 
 **Fix (macOS):**
 ```bash
@@ -29,8 +38,8 @@ The CLI resolves authentication in this priority order: (1) `SUPRSEND_SERVICE_TO
 # Option 1: Set environment variable
 export SUPRSEND_SERVICE_TOKEN="your_service_token_here"
 
-# Option 2: Add or re-add a profile
-suprsend profile add --name default --service-token <YOUR_SERVICE_TOKEN>
+# Option 2: Add or re-add a profile (drop the 'npx' prefix if you have a global install)
+npx suprsend profile add --name default --service-token <YOUR_SERVICE_TOKEN>
 ```
 
 Get a new service token from [Account Settings → Service Tokens](https://app.suprsend.com) if needed.
@@ -51,9 +60,9 @@ Try removing and reinstalling the plugin inside Claude Code:
 
 1. Test the server standalone:
    ```bash
-   suprsend start-mcp-server --transport stdio
+   npx suprsend start-mcp-server --transport stdio
    ```
-   You should see no errors. Press Ctrl+C to stop.
+   You should see no errors. Press Ctrl+C to stop. (Use `suprsend` directly if you have a global install.)
 
 2. Verify the plugin's `.mcp.json` exists and contains the suprsend server config.
 

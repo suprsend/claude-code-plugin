@@ -7,18 +7,21 @@ This project is the official SuprSend plugin for Claude Code. It provides two co
 Skills are bundled in the `skills/` directory (sourced from `suprsend/skills` and committed to the repo). A CI workflow checks weekly for upstream changes and auto-opens a PR if skills drift. You can also run `make build` to refresh them manually. They give you:
 
 - **suprsend-workflow-schema**: Complete JSON schema reference for all workflow node types, with documentation and examples.
-- **suprsend-docs-support**: How to access SuprSend docs, LLM-friendly endpoints, Slack community, and support channels.
-- **suprsend-cli**: Full CLI command reference for managing workspaces, templates, workflows, schemas, events, categories, and translations.
+- **suprsend-template-schema**: Template (variant) schema reference — variant envelope, multi-tenant + multi-lingual variants, Handlebars + JSONNET templating syntax, and per-channel content schemas for all 9 channels (email, sms, whatsapp, inbox, slack, ms_teams, androidpush, iospush, webpush).
+- **suprsend-docs-support**: How to access SuprSend docs — docs-over-SSH (`ssh suprsend.sh`), `.md`-suffix raw markdown fallback, LLM-friendly endpoints, Slack community, and support channels.
+- **suprsend-cli**: Full CLI command reference with agent-targeted per-command Tips for managing workspaces, templates, workflows, schemas, events, categories, and translations.
 
 Skills load progressively — metadata at startup, instructions on activation, resources on demand.
 
 ## MCP Server (Live Platform Tools)
 
-The SuprSend MCP server is started via the CLI:
+The SuprSend MCP server is started via the CLI. The bundled `.mcp.json` invokes it through `npx`, so the plugin works without a separate CLI install — Node.js v20+ is the only prerequisite:
 
 ```
-suprsend start-mcp-server --transport stdio
+npx suprsend start-mcp-server --transport stdio
 ```
+
+If `suprsend` is already on `PATH` (via `brew install --cask suprsend`, `go install`, or similar), that binary is used directly and takes precedence over the npx fallback.
 
 It exposes tools for:
 
@@ -37,7 +40,7 @@ The CLI resolves auth in priority order: (1) `SUPRSEND_SERVICE_TOKEN` env var, (
 
 ```
 # Save a default profile
-suprsend profile add --name default --service-token <YOUR_SERVICE_TOKEN>
+npx suprsend profile add --name default --service-token <YOUR_SERVICE_TOKEN>
 ```
 
 ## When to Use What
@@ -50,17 +53,21 @@ suprsend profile add --name default --service-token <YOUR_SERVICE_TOKEN>
 
 ```bash
 # Authentication
-suprsend profile add --name default --service-token <TOKEN>  # Save a profile
-suprsend profile list                                        # List configured profiles
+npx suprsend profile add --name default --service-token <TOKEN>  # Save a profile
+npx suprsend profile list                                        # List configured profiles
 
-# CLI essentials
-suprsend sync                                            # Sync all assets
-suprsend workflows list                                  # List workflows
-suprsend workflows pull <slug>                           # Pull workflow locally
-suprsend workflows push <slug>                           # Push workflow to platform
-suprsend schemas list                                    # List schemas
-suprsend schemas pull <slug>                             # Pull schema locally
-suprsend schemas push <slug>                             # Push schema to platform
+# CLI essentials (drop the 'npx' prefix if you have a local install)
+npx suprsend sync                                  # Sync all assets between workspaces
+npx suprsend workflow list                         # List workflows
+npx suprsend workflow pull <slug>                  # Pull workflow locally
+npx suprsend workflow push <slug>                  # Push workflow to platform (writes to draft)
+npx suprsend workflow commit <slug>                # Promote draft to live
+npx suprsend template list                         # List templates
+npx suprsend template pull <slug>                  # Pull template (including variants) locally
+npx suprsend template push <slug>                  # Push template + variants (writes to draft)
+npx suprsend schema list                           # List schemas
+npx suprsend schema pull <slug>                    # Pull schema locally
+npx suprsend schema push <slug>                    # Push schema (writes to draft)
 ```
 
 ## Important Notes

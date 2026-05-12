@@ -50,20 +50,28 @@ else
   fail "No skills found — run: make build"
 fi
 
-# 4. SuprSend CLI
+# 4. SuprSend CLI is invokable (locally installed OR runnable via npx)
 if command -v suprsend &>/dev/null; then
-  pass "SuprSend CLI installed"
+  pass "SuprSend CLI installed on PATH"
+elif command -v npx &>/dev/null; then
+  pass "SuprSend CLI will run via 'npx suprsend' (no local install required)"
 else
-  fail "SuprSend CLI not found"
+  fail "Neither 'suprsend' on PATH nor 'npx' available — install Node.js (v20+) or the SuprSend CLI"
 fi
 
 # 5. SuprSend authentication
+if command -v suprsend &>/dev/null; then
+  SUPRSEND="suprsend"
+else
+  SUPRSEND="npx -y suprsend"
+fi
+
 if [ -n "${SUPRSEND_SERVICE_TOKEN:-}" ]; then
   pass "SUPRSEND_SERVICE_TOKEN environment variable set"
-elif suprsend profile list 2>/dev/null | grep -q .; then
+elif $SUPRSEND profile list 2>/dev/null | grep -q .; then
   pass "SuprSend profile configured"
 else
-  fail "No SuprSend authentication found — run: suprsend profile add --name default --service-token <TOKEN>"
+  fail "No SuprSend authentication found — run: npx suprsend profile add --name default --service-token <TOKEN>"
 fi
 
 # 6. Claude Code CLI

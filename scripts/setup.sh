@@ -40,34 +40,36 @@ if ! command -v claude &>/dev/null; then
 fi
 info "Claude Code CLI found"
 
-# Check SuprSend CLI
-if ! command -v suprsend &>/dev/null; then
-  warn "SuprSend CLI not found. Installing via Homebrew..."
-  if command -v brew &>/dev/null; then
-    if brew tap suprsend/tap && brew install suprsend; then
-      info "SuprSend CLI installed"
-    else
-      error "Homebrew install failed."
-      echo "  Install manually: https://github.com/suprsend/cli"
-      exit 1
-    fi
-  else
-    error "SuprSend CLI not found and Homebrew is not available."
-    echo "  Install manually: https://github.com/suprsend/cli"
-    echo "  Or via Go: go install github.com/suprsend/cli/cmd/suprsend@latest"
-    exit 1
-  fi
+# Check node + npx (used to run `npx suprsend`)
+if ! command -v node &>/dev/null || ! command -v npx &>/dev/null; then
+  error "node and npx are required but not installed."
+  echo "  Install Node.js (v20+) from https://nodejs.org or via your package manager."
+  echo "  The plugin runs the SuprSend CLI via 'npx suprsend' — no separate install needed."
+  exit 1
+fi
+info "node + npx found"
+
+# Check SuprSend CLI invocation (npx is fine — package is fetched on first use)
+if command -v suprsend &>/dev/null; then
+  info "SuprSend CLI on PATH"
 else
-  info "SuprSend CLI found"
+  info "SuprSend CLI will run via 'npx suprsend' (no local install required)"
 fi
 
 # -------------------------------------------------------------------
 # 2. Check SuprSend authentication
 # -------------------------------------------------------------------
 
+# Prefer a local CLI if one exists; fall back to npx for the profile check.
+if command -v suprsend &>/dev/null; then
+  SUPRSEND="suprsend"
+else
+  SUPRSEND="npx -y suprsend"
+fi
+
 if [ -n "${SUPRSEND_SERVICE_TOKEN:-}" ]; then
   info "SUPRSEND_SERVICE_TOKEN environment variable set"
-elif suprsend profile list 2>/dev/null | grep -q .; then
+elif $SUPRSEND profile list 2>/dev/null | grep -q .; then
   info "SuprSend profile configured"
 else
   warn "No SuprSend authentication found."
@@ -80,7 +82,7 @@ else
   echo ""
   echo "  Or save it as a profile:"
   echo ""
-  echo "    suprsend profile add --name default --service-token <YOUR_SERVICE_TOKEN>"
+  echo "    npx suprsend profile add --name default --service-token <YOUR_SERVICE_TOKEN>"
   echo ""
 fi
 
@@ -107,6 +109,7 @@ echo -e "${BOLD}${GREEN}Setup complete!${NC}"
 echo ""
 echo "  Install the plugin (inside Claude Code):"
 echo "    /plugin marketplace add suprsend/claude-code-plugin"
+echo "    /plugin install suprsend@suprsend-marketplace"
 echo ""
 echo "  Then try:"
 echo "    > List all my workflows"
