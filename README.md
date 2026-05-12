@@ -11,7 +11,7 @@ The official [SuprSend](https://suprsend.com) plugin for [Claude Code](https://c
 
 ## Quick Start
 
-The plugin runs the SuprSend CLI via `npx suprsend` — no separate install step. You only need Node.js (v20+) and Claude Code.
+The plugin format is shared across **Claude Code**, **VS Code Copilot**, and **GitHub Copilot CLI** — the same repo serves all three. The plugin runs the SuprSend CLI via `npx suprsend`, so the only hard prerequisite is Node.js (v20+).
 
 ### 1. Authenticate
 
@@ -27,7 +27,9 @@ Or set it as an environment variable for the current session:
 export SUPRSEND_SERVICE_TOKEN="your_service_token_here"
 ```
 
-### 2. Add the marketplace & install the plugin
+### 2. Install the plugin
+
+#### Claude Code
 
 Inside Claude Code, add the SuprSend marketplace and then install the plugin:
 
@@ -36,7 +38,34 @@ Inside Claude Code, add the SuprSend marketplace and then install the plugin:
 /plugin install suprsend@suprsend-marketplace
 ```
 
-That's it — skills and MCP tools are available immediately. Claude Code will fetch the `suprsend` npm package on first MCP startup and cache it; subsequent launches are instant.
+#### VS Code Copilot
+
+1. Open the command palette (`Cmd/Ctrl + Shift + P`)
+2. Run **`Chat: Install Plugin From Source`**
+3. Enter `suprsend/claude-code-plugin` when prompted (or the full URL `https://github.com/suprsend/claude-code-plugin.git`)
+
+Verify the plugin is enabled in the Extensions sidebar under **Agent Plugins → Installed** (search `@agentPlugins`), or open the Chat view's gear → **Plugins**.
+
+For a whole team, commit `.github/copilot/settings.json` to your project repo:
+
+```json
+{
+  "extraKnownMarketplaces": {
+    "suprsend-marketplace": {
+      "source": { "source": "github", "repo": "suprsend/claude-code-plugin" }
+    }
+  },
+  "enabledPlugins": {
+    "suprsend@suprsend-marketplace": true
+  }
+}
+```
+
+When teammates open the repo, the marketplace is auto-registered and the plugin is enabled.
+
+---
+
+That's it — skills and MCP tools are available immediately. The host tool fetches the `suprsend` npm package on first MCP startup and caches it; subsequent launches are instant.
 
 > Prefer a global install? `brew tap suprsend/tap && brew install --cask suprsend` (macOS) or `go install github.com/suprsend/cli/cmd/suprsend@latest` (any platform) both work — `suprsend` on `PATH` takes precedence over the npx fallback.
 
@@ -238,32 +267,34 @@ go install github.com/suprsend/cli/cmd/suprsend@latest        # any platform
 ### MCP server not connecting
 
 1. Verify authentication: check your service token or profile configuration
-2. Test the server manually: `suprsend start-mcp-server --transport stdio`
+2. Test the server manually: `npx suprsend start-mcp-server --transport stdio`
 3. Reinstall the plugin:
-   ```
-   /plugin marketplace remove suprsend-marketplace
-   /plugin marketplace add suprsend/claude-code-plugin
-   /plugin install suprsend@suprsend-marketplace
-   ```
+   - **Claude Code**:
+     ```
+     /plugin marketplace remove suprsend-marketplace
+     /plugin marketplace add suprsend/claude-code-plugin
+     /plugin install suprsend@suprsend-marketplace
+     ```
+   - **VS Code Copilot**: right-click the `suprsend` plugin in **Agent Plugins → Installed** → **Uninstall**, then run `Chat: Install Plugin From Source` again.
+
+In VS Code, MCP startup logs appear in the **Output** panel (pick **MCP — suprsend** from the dropdown).
 
 ### Skills not loading
 
 Try removing and re-adding the plugin:
 
-```
-/plugin marketplace remove suprsend-marketplace
-/plugin marketplace add suprsend/claude-code-plugin
-/plugin install suprsend@suprsend-marketplace
-```
+- **Claude Code**:
+  ```
+  /plugin marketplace remove suprsend-marketplace
+  /plugin marketplace add suprsend/claude-code-plugin
+  /plugin install suprsend@suprsend-marketplace
+  ```
+- **VS Code Copilot**: toggle the plugin off and on in **Agent Plugins → Installed**, or uninstall and reinstall via the command palette.
 
 ### Plugin not loading
 
-Verify the plugin is installed by checking your active plugins in Claude Code (run `/plugin` and check the **Installed** tab). If missing, reinstall:
-
-```
-/plugin marketplace add suprsend/claude-code-plugin
-/plugin install suprsend@suprsend-marketplace
-```
+- **Claude Code**: run `/plugin` and check the **Installed** tab. If missing, reinstall via `/plugin marketplace add suprsend/claude-code-plugin`.
+- **VS Code Copilot**: search `@agentPlugins` in the Extensions sidebar. If missing, reinstall via `Chat: Install Plugin From Source`.
 
 ## Contributing
 

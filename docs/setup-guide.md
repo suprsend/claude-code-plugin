@@ -28,16 +28,40 @@ Or set it as an environment variable for the current session:
 export SUPRSEND_SERVICE_TOKEN="your_service_token_here"
 ```
 
-### 2. Add the marketplace & install the plugin
+### 2. Install the plugin in your AI tool
 
-Inside Claude Code:
+The plugin format is shared between Claude Code, VS Code Copilot, and GitHub Copilot CLI — pick the install path that matches your editor. The bundled `.mcp.json` invokes `npx -y suprsend start-mcp-server`, so the MCP server starts on demand regardless of host.
+
+#### Claude Code
 
 ```
 /plugin marketplace add suprsend/claude-code-plugin
 /plugin install suprsend@suprsend-marketplace
 ```
 
-That's it. The bundled `.mcp.json` invokes `npx -y suprsend start-mcp-server`, so the MCP server starts on demand.
+#### VS Code Copilot
+
+1. Open the command palette (`Cmd/Ctrl + Shift + P`).
+2. Run **`Chat: Install Plugin From Source`**.
+3. Enter `suprsend/claude-code-plugin` (or the full URL `https://github.com/suprsend/claude-code-plugin.git`).
+4. Verify it's enabled in the Extensions sidebar (search `@agentPlugins`) under **Agent Plugins → Installed**.
+
+For team-wide install, commit `.github/copilot/settings.json` to your project repo:
+
+```json
+{
+  "extraKnownMarketplaces": {
+    "suprsend-marketplace": {
+      "source": { "source": "github", "repo": "suprsend/claude-code-plugin" }
+    }
+  },
+  "enabledPlugins": {
+    "suprsend@suprsend-marketplace": true
+  }
+}
+```
+
+When teammates open the repo, the marketplace is auto-registered and the plugin is enabled.
 
 ## Optional: global install
 
@@ -91,13 +115,15 @@ npx suprsend workflow list
 npx suprsend sync --from staging --to production
 ```
 
-The MCP server and plugin are for interactive Claude Code sessions. In CI, call the SuprSend CLI commands directly.
+The MCP server and plugin are for interactive Claude Code / VS Code Copilot sessions. In CI, call the SuprSend CLI commands directly.
 
 ## Uninstall
 
-Inside Claude Code, uninstall the plugin and remove the marketplace:
+**Claude Code** — uninstall the plugin and remove the marketplace:
 
 ```
 /plugin uninstall suprsend@suprsend-marketplace
 /plugin marketplace remove suprsend-marketplace
 ```
+
+**VS Code Copilot** — right-click the `suprsend` plugin in **Agent Plugins → Installed** and choose **Uninstall**. To remove the workspace marketplace registration, delete the `extraKnownMarketplaces.suprsend-marketplace` entry from `.github/copilot/settings.json` (or whichever settings file registered it).

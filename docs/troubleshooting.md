@@ -48,13 +48,15 @@ Get a new service token from [Account Settings → Service Tokens](https://app.s
 
 ### Plugin not loading
 
-Try removing and reinstalling the plugin inside Claude Code:
+Try removing and reinstalling the plugin:
 
-```
-/plugin marketplace remove suprsend-marketplace
-/plugin marketplace add suprsend/claude-code-plugin
-/plugin install suprsend@suprsend-marketplace
-```
+- **Claude Code**:
+  ```
+  /plugin marketplace remove suprsend-marketplace
+  /plugin marketplace add suprsend/claude-code-plugin
+  /plugin install suprsend@suprsend-marketplace
+  ```
+- **VS Code Copilot**: right-click the `suprsend` plugin in **Agent Plugins → Installed** → **Uninstall**, then run `Chat: Install Plugin From Source` from the command palette and enter `suprsend/claude-code-plugin`.
 
 ### MCP server not connecting
 
@@ -66,12 +68,11 @@ Try removing and reinstalling the plugin inside Claude Code:
 
 2. Verify the plugin's `.mcp.json` exists and contains the suprsend server config.
 
-3. Reinstall the plugin:
-   ```
-   /plugin marketplace remove suprsend-marketplace
-   /plugin marketplace add suprsend/claude-code-plugin
-   /plugin install suprsend@suprsend-marketplace
-   ```
+3. Check host-specific logs:
+   - **Claude Code**: the MCP server output appears in the conversation when tool calls fail.
+   - **VS Code Copilot**: open the **Output** panel and select **MCP — suprsend** from the dropdown.
+
+4. Reinstall the plugin (see steps above).
 
 ### Tools not appearing
 
