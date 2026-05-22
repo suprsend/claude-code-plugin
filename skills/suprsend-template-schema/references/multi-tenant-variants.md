@@ -4,7 +4,62 @@ Use a per-tenant variant when a template needs different content (subject line, 
 
 Selection: when a template is sent for a specific `tenant_id`, SuprSend prefers the variant matching that `tenant_id` over the `tenant_id: null` variant (for the same channel + locale + condition match). If no tenant-specific variant exists, the `null` variant is used.
 
-For tenant *variables* (logo, colors, properties) that just need substituting into shared content, prefer using `{{$brand.<property>}}` inside a single variant — see the doc below for the full variable set.
+For tenant *variables* (logo, colors, properties) that just need substituting into shared content, prefer using `{{$brand.<property>}}` inside a single variant.
+
+## Reserved `$brand.*` keys
+
+These keys live directly under `$brand.`. Anything not in this list is a custom property and must be referenced as `{{$brand.properties.<key>}}` — see [Custom tenant properties](#custom-tenant-properties) below.
+
+| Variable | Renders |
+| --- | --- |
+| `{{$brand.brand_id}}` | Tenant slug / id |
+| `{{$brand.brand_name}}` | Tenant display name. **The key is `brand_name`, not `name`.** |
+| `{{$brand.logo}}` | Tenant logo URL |
+| `{{$brand.primary_color}}` | Primary brand color (hex) |
+| `{{$brand.secondary_color}}` | Secondary brand color (hex) |
+| `{{$brand.tertiary_color}}` | Tertiary brand color (hex) |
+| `{{$brand.timezone}}` | Tenant timezone (IANA, e.g. `America/Los_Angeles`) |
+| `{{$brand.embedded_preference_url}}` | Brand-level embedded preference URL |
+| `{{$brand.hosted_preference_domain}}` | Brand-level hosted preference domain |
+| `{{$brand.blocked_channels}}` | List of channels blocked at the brand level |
+
+### Social links
+
+| Variable | Renders |
+| --- | --- |
+| `{{$brand.social_links.x}}` | X (formerly Twitter) profile URL |
+| `{{$brand.social_links.twitter}}` | Twitter profile URL (legacy alias for `x`) |
+| `{{$brand.social_links.facebook}}` | Facebook page URL |
+| `{{$brand.social_links.instagram}}` | Instagram profile URL |
+| `{{$brand.social_links.linkedin}}` | LinkedIn profile / company page URL |
+| `{{$brand.social_links.youtube}}` | YouTube channel URL |
+| `{{$brand.social_links.tiktok}}` | TikTok profile URL |
+| `{{$brand.social_links.discord}}` | Discord invite / server URL |
+| `{{$brand.social_links.telegram}}` | Telegram channel URL |
+| `{{$brand.social_links.medium}}` | Medium publication URL |
+| `{{$brand.social_links.website}}` | Tenant website URL |
+
+> **Anything not in the reserved tables above is a custom property and must be referenced as `{{$brand.properties.<key>}}` — never `{{$brand.<key>}}` directly.** Common customer-added properties like `address`, `unsubscribe_url`, `support_url`, `support_email` are *not* reserved; they live under `$brand.properties.`. Authoring `{{$brand.support_url}}` directly will not resolve.
+
+## Custom tenant properties
+
+For any property not in the reserved list above, use `{{$brand.properties.<key>}}`:
+
+- `{{$brand.properties.address}}`
+- `{{$brand.properties.unsubscribe_url}}`
+- `{{$brand.properties.support_url}}`
+- `{{$brand.properties.support_email}}`
+
+In JSONNET templates, the equivalent shapes are `data["$brand"].<reserved_key>` and `data["$brand"].properties.<custom_key>`.
+
+## Per-recipient preference URLs (not under `$brand`)
+
+These are generated per recipient at run-time and live at the top level — not nested under `$brand`:
+
+- `{{$embedded_preference_url}}` — per-recipient embedded preference URL
+- `{{$hosted_preference_url}}` — per-recipient hosted preference / unsubscribe URL
+
+`{{$brand.embedded_preference_url}}` and `{{$brand.hosted_preference_domain}}` are *different* variables — they refer to the brand-level configuration, not the recipient-specific URL. Pick based on intent.
 
 ## Documentation
 
@@ -15,7 +70,7 @@ For tenant *variables* (logo, colors, properties) that just need substituting in
 
 ## Overview
 
-Use tenant properties in templates to dynamically render tenant-specific content. One template works for all tenants—SuprSend replaces variables with tenant-specific values at runtime.
+Use tenant properties in templates to dynamically render tenant-specific content. One template works for all tenants-SuprSend replaces variables with tenant-specific values at runtime.
 
 ## Email Template Design
 
@@ -53,11 +108,10 @@ Use `{{$brand.<property>}}` in handlebars templates and `data["$brand"].<propert
 
 **Basic**
 
-| Variable             | Description                       |
-| -------------------- | --------------------------------- |
-| `$brand.tenant_id`   | Tenant identifier (max 64 chars). |
-| `$brand.tenant_name` | Display name for the tenant.      |
-| `$brand.logo`        | URL of the tenant’s logo image.   |
+| Variable            | Description                     |
+| ------------------- | ------------------------------- |
+| `$brand.brand_name` | Display name for the tenant.    |
+| `$brand.logo`       | URL of the tenant’s logo image. |
 
 **Colors**
 
@@ -78,7 +132,7 @@ Use `{{$brand.<property>}}` in handlebars templates and `data["$brand"].<propert
 
 **Custom properties**
 
-| Variable                  | Description                                                                     |
-| ------------------------- | ------------------------------------------------------------------------------- |
-| `$brand.properties.<key>` | Any custom property set on the tenant (e.g. `$brand.properties.support_email`). |
+| Variable                  | Description                                                                            |
+| ------------------------- | -------------------------------------------------------------------------------------- |
+| `$brand.properties.<key>` | Any custom property set on the tenant (for example `$brand.properties.support_email`). |
 ```

@@ -35,13 +35,13 @@ Conditions evaluate data from trigger payloads, user properties, tenant properti
 
 ### Data Types
 
-| Data Type          | Description                                          | What to pass in key                                                                                                   | What to pass in dynamic value                                        |                                                                       |
-| ------------------ | ---------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------- | --------------------------------------------------------------------- |
-| **Input Payload**  | Data from trigger payload or nodes before the branch | Directly specify as `key` with no prefix                                                                              | Use key directly (e.g., `payment_due_date`)                          |                                                                       |
-| **Actor**          | Properties of the user who performed the action      | Add as `<property_key>`                                                                                               | Add as `$actor.<property_key>`                                       |                                                                       |
-| **Recipient**      | Properties of the user receiving the notification    | Add as `<property_key>`                                                                                               | Add as `$recipient.<property_key>`                                   |                                                                       |
-| **Tenant**         | Properties of the tenant/brand                       | Add as `<property_key>` for reserved properties,  `properties.<property_key>` for custom properties                   | Add as `$brand.<property_key>` or `$brand.properties.<property_key>` |                                                                       |
-| **Message Status** | Delivery status of previously sent notifications     | Pass the node slug whose message status you want to check, e.g., `message_status from node "welcome-email" == "seen"` | Pass the status you want to check, e.g., `"seen"`                    | Value can be one of `delivered`, `seen`, `clicked`, `delivery_failed` |
+| Data Type          | Description                                          | What to pass in key                                                                                                          | What to pass in dynamic value                                        |                                                                       |
+| ------------------ | ---------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------- | --------------------------------------------------------------------- |
+| **Input Payload**  | Data from trigger payload or nodes before the branch | Directly specify as `key` with no prefix                                                                                     | Use key directly (for example, `payment_due_date`)                   |                                                                       |
+| **Actor**          | Properties of the user who performed the action      | Add as `<property_key>`                                                                                                      | Add as `$actor.<property_key>`                                       |                                                                       |
+| **Recipient**      | Properties of the user receiving the notification    | Add as `<property_key>`                                                                                                      | Add as `$recipient.<property_key>`                                   |                                                                       |
+| **Tenant**         | Properties of the tenant/brand                       | Add as `<property_key>` for reserved properties,  `properties.<property_key>` for custom properties                          | Add as `$brand.<property_key>` or `$brand.properties.<property_key>` |                                                                       |
+| **Message Status** | Delivery status of previously sent notifications     | Pass the node slug whose message status you want to check, for example, `message_status from node "welcome-email" == "seen"` | Pass the status you want to check, for example, `"seen"`             | Value can be one of `delivered`, `seen`, `clicked`, `delivery_failed` |
 
 ### Operators
 
@@ -56,7 +56,7 @@ Conditions evaluate data from trigger payloads, user properties, tenant properti
 | `intersects` / `not intersects`                            | Any array value matches / No array values match                   | Arrays               |
 
 > **Note:**
-  **Type constraints**: If a key's data type doesn't match the operator (e.g., using `>` on a string), the condition will always evaluate to false.
+  **Type constraints**: If a key's data type doesn't match the operator (for example, using `>` on a string), the condition will always evaluate to false.
 
 
 ### Values
@@ -77,12 +77,12 @@ You can either add a fixed value or a dynamic value to the condition.
 
 Dynamic values are evaluated based on the data available at the node input along with actor, recipient or tenant properties. Refer below table for types of dynamic values and their respective syntax.
 
-| Type          | Syntax                                                                                                                                                            |
-| ------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Input payload | Add key directly (e.g., `payment_due_date`)                                                                                                                       |
-| Actor         | Add as `$actor.<property_key>` (e.g., `$actor.role`)                                                                                                              |
-| Recipient     | Add as `$recipient.<property_key>` (e.g., `$recipient.plan`)                                                                                                      |
-| Tenant        | Add as `$brand.<property_key>` for reserved properties, add as `properties.<property_key>` for custom properties (e.g., `$brand.timezone`, `properties.timezone`) |
+| Type          | Syntax                                                                                                                                                                   |
+| ------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| Input payload | Add key directly (for example, `payment_due_date`)                                                                                                                       |
+| Actor         | Add as `$actor.<property_key>` (for example, `$actor.role`)                                                                                                              |
+| Recipient     | Add as `$recipient.<property_key>` (for example, `$recipient.plan`)                                                                                                      |
+| Tenant        | Add as `$brand.<property_key>` for reserved properties, add as `properties.<property_key>` for custom properties (for example, `$brand.timezone`, `properties.timezone`) |
 
 ## Combining Conditions
 
@@ -99,7 +99,7 @@ Combine conditions using `AND` and `OR` logical operators:
 
 ## Condition on Message Status
 
-Message Status is a special data type that lets you evaluate the delivery or engagement state of a previously sent notification. Common use cases include reminder and escalation workflows—for example, sending a follow-up notification if the user has not seen the earlier message.
+Message Status is a special data type that lets you evaluate the delivery or engagement state of a previously sent notification. Common use cases include reminder and escalation workflows-for example, sending a follow-up notification if the user has not seen the earlier message.
 
 When using message status checks, always add a delay before evaluating the status to allow sufficient time for vendors to report delivery or engagement events.
 
@@ -273,6 +273,48 @@ Each branch has 2-10 items: up to 9 conditional branches and 1 default branch (m
       "nodes": [
         { "node_type": "send_email", "properties": { "template": "free-tier-alert" } }
       ]
+    }
+  ]
+}
+```
+
+## Terminating the workflow on a branch
+
+Set `is_terminal: true` on a branch object to end the workflow run when that branch finishes. Nodes that appear *after* the parent `branch` (or `branch_waituntil`) node in the tree are skipped for runs that exited through a terminal branch.
+
+Use it when the branch represents a clean exit from the journey:
+
+- Rejection / decline paths in approval flows
+- Timeout / no-response paths in `branch_waituntil` — see [Wait Until → Terminating on timeout](node-wait-until.md)
+- Failure paths where no further notifications should fire
+- Any branch after which the rest of the parent tree would be incorrect to execute (e.g., a post-resolution sequence that should not run if the request was rejected)
+
+Default: `is_terminal: false` — i.e., after the branch's `nodes` finish, the workflow continues with whatever node follows the parent branch construct. Forgetting to set `is_terminal: true` on a rejection / timeout branch causes the post-success sequence to run for users who rejected or timed out.
+
+### Example: terminate the workflow on rejection
+
+With `is_terminal: true` on the Rejected branch, the workflow stops after the rejection notice fires — any nodes that appear after this `branch` in the parent tree are skipped for rejected requests.
+
+```json
+{
+  "node_type": "branch",
+  "name": "Approval Outcome",
+  "ref": "approval_outcome",
+  "branches": [
+    {
+      "name": "Approved",
+      "ref": "approved",
+      "is_default": false,
+      "conditions": [ /* approval condition */ ],
+      "nodes": [ /* post-approval sends */ ]
+    },
+    {
+      "name": "Rejected",
+      "ref": "rejected",
+      "is_default": true,
+      "is_terminal": true,
+      "conditions": [],
+      "nodes": [ /* rejection notice send, then workflow ends */ ]
     }
   ]
 }

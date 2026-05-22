@@ -4,6 +4,8 @@ Most text-bearing fields in a variant's `content` are rendered with Handlebars a
 
 This applies to every channel where `templating_language` is `handlebars` (the default for all channels). Slack and MS Teams additionally support `jsonnet` — for those, see the channel reference.
 
+> **Brand variables:** the tenant display name is `{{$brand.brand_name}}`, not `{{$brand.name}}`. Custom tenant properties always go under `{{$brand.properties.<key>}}`. There is no `$brand.<custom_key>` shorthand — `{{$brand.address}}`, `{{$brand.support_url}}`, `{{$brand.unsubscribe_url}}` will not resolve. See [Multi-tenant Variants](references/multi-tenant-variants.md) for the full reserved-key list and the per-recipient `{{$hosted_preference_url}}` / `{{$embedded_preference_url}}` variables.
+
 ## Documentation
 
 ```
@@ -42,7 +44,7 @@ Apart from the inbuilt helper functions, we have also created some custom helper
 
 
 <Tip>
-  **AI prompt — write a Handlebars expression:** *"Write a Handlebars expression for SuprSend that \[describe task — e.g. 'shows a comma-separated list from an array', 'formats a date as Mon DD YYYY', 'shows different content for premium vs free users']. My variables: \[paste JSON]. SuprSend supports custom helpers: formatDate, math, capitalize, default, formatCurrency."*
+  **AI prompt — write a Handlebars expression:** *"Write a Handlebars expression for SuprSend that \[describe task — for example 'shows a comma-separated list from an array', 'formats a date as Mon DD YYYY', 'shows different content for premium vs free users']. My variables: \[paste JSON]. SuprSend supports custom helpers: formatDate, math, capitalize, default, formatCurrency."*
 </Tip>
 
 ### default
@@ -188,11 +190,11 @@ Returns a formatted date string. This helper will throw error if an invalid date
   ```
 
 
-| parameter         | Obligation  | description                                                                                                                                                                                                                                                     |
-| :---------------- | :---------- | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **variable**      | *mandatory* | should be a date or timestamp. It will throw an error for invalid date format. To get today's date (date on which template is getting rendered) you can use `"now"` string.                                                                                     |
-| **format string** | *mandatory* | date string defining the format in which date should be printed. See all [formatting options here](https://momentjs.com/docs/#/displaying/format/). e.g. **"dddd, MMMM Do YYYY, h:mm:ss a"** will return datetime as **"Sunday, February 14 2010, 3:25:50 PM"** |
-| **timezone**      | *optional*  | you can add timezone as a third parameter to convert time in a given timezone. See the list of [all possible timezones here](https://support.sendwithus.com/jinja/jinja_time/#complete-list-of-all-available-timezones)                                         |
+| parameter         | Obligation  | description                                                                                                                                                                                                                                                            |
+| :---------------- | :---------- | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **variable**      | *mandatory* | should be a date or timestamp. It will throw an error for invalid date format. To get today's date (date on which template is getting rendered) you can use `"now"` string.                                                                                            |
+| **format string** | *mandatory* | date string defining the format in which date should be printed. See all [formatting options here](https://momentjs.com/docs/#/displaying/format/). for example **"dddd, MMMM Do YYYY, h:mm:ss a"** will return datetime as **"Sunday, February 14 2010, 3:25:50 PM"** |
+| **timezone**      | *optional*  | you can add timezone as a third parameter to convert time in a given timezone. See the list of [all possible timezones here](https://support.sendwithus.com/jinja/jinja_time/#complete-list-of-all-available-timezones)                                                |
 
 **Examples:**
 
@@ -609,7 +611,7 @@ Can be used to get the number of items in an array or the character length of a 
 ***
 
 <Tip>
-  **AI prompt — debug rendering:** *"My SuprSend template isn't rendering. Template: \[paste]. Variables JSON: \[paste]. Expected: \[describe]. Actual: \[blank/raw syntax/error]. Check for: path mismatch, double vs triple braces for URLs, #each on non-array, missing closing tags, missing $on$recipient/\$brand."*
+  **AI prompt - debug rendering:** *"My SuprSend template isn't rendering. Template: \[paste]. Variables JSON: \[paste]. Expected: \[describe]. Actual: \[blank/raw syntax/error]. Check for: path mismatch, double vs triple braces for URLs, #each on non-array, missing closing tags, missing $on$recipient/\$brand."*
 </Tip>
 
 ## Frequently Asked Questions
