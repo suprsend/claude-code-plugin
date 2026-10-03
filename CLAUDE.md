@@ -1,5 +1,7 @@
 # CLAUDE.md — SuprSend Claude Code Plugin
 
+> **Deprecated.** This repository is replaced by `suprsend/claude-plugin` (Claude) and `suprsend/agent-plugin` (other agents), and will be archived. Its marketplace forwards the `suprsend` plugin to `suprsend/claude-plugin`. Make new plugin changes in those repositories.
+
 This project is the official SuprSend plugin for Claude Code. The plugin format is shared with **VS Code Copilot** and **GitHub Copilot CLI** — the same repo serves all three tools, so changes here affect every host. See the README's Quick Start for VS Code-specific install steps. It provides two complementary layers for working with SuprSend's notification infrastructure:
 
 ## Skills (Read-Only Context)

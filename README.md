@@ -1,4 +1,17 @@
-# SuprSend Claude Code Plugin
+# SuprSend Claude Code Plugin (deprecated)
+
+> [!IMPORTANT]
+> **This repository is deprecated.** The SuprSend plugin moved to two new repositories:
+>
+> - **[`suprsend/claude-plugin`](https://github.com/suprsend/claude-plugin)**: for Claude on the web, desktop, and mobile, Cowork, and Claude Code.
+> - **[`suprsend/agent-plugin`](https://github.com/suprsend/agent-plugin)**: for VS Code, GitHub Copilot, Cursor, ChatGPT and Codex, Kiro, and the other [Agent Plugins](https://agent-plugins.org) clients.
+>
+> **If you installed this plugin in Claude Code,** run `/plugin marketplace update suprsend-marketplace`: this marketplace now forwards the `suprsend` plugin to `suprsend/claude-plugin`. For a clean setup, remove this marketplace and add the new one: `/plugin marketplace add suprsend/claude-plugin`, then `/plugin install suprsend@suprsend`.
+>
+> **What changes:** the new plugin uses the **hosted** SuprSend MCP server (`https://mcp.suprsend.com/mcp`). You sign in with your SuprSend account (OAuth) and need no service token. If you need the local CLI server (CI, a service token), add it yourself: `claude mcp add suprsend-cli -- npx -y suprsend start-mcp-server --transport stdio`.
+>
+> This repository will be archived. The rest of this README describes the old plugin.
+
 
 The official [SuprSend](https://suprsend.com) plugin for [Claude Code](https://code.claude.com/docs). Combines **bundled agent skills** and the **SuprSend MCP server** to give Claude deep context about SuprSend — workflows, templates, schemas, CLI commands, and live platform interactions — all from your terminal.
 

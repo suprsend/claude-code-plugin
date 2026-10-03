@@ -5,14 +5,16 @@
     "email": "support@suprsend.com"
   },
   "metadata": {
-    "description": "SuprSend plugins for Claude Code"
+    "description": "Deprecated: the SuprSend plugin moved to suprsend/claude-plugin (Claude) and suprsend/agent-plugin (other agents)."
   },
   "plugins": [
     {
       "name": "suprsend",
-      "source": "./",
-      "description": "SuprSend plugin for Claude Code — workflow management, templates, schemas, and notification infrastructure",
-      "version": "0.1.1"
+      "source": {
+        "source": "github",
+        "repo": "suprsend/claude-plugin"
+      },
+      "description": "Moved to suprsend/claude-plugin: the hosted SuprSend MCP server and a skill. This marketplace forwards to it."
     }
   ]
 }
